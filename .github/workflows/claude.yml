@@ -31,9 +31,12 @@ jobs:
           fetch-depth: 1
 
       - name: Project Setup
+        run: npm run setup
+
+      - name: Start Development Server
         run: |
-          npm run setup
-          npm run dev:daemon
+          npm run dev -- --turbopack > logs.txt 2>&1 &
+          npx wait-on http://localhost:3000 --timeout 60000
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
